@@ -1,6 +1,3 @@
 ﻿  lameEncoder.cpp
   main.cpp
-  wavReader.cpp
-F:\develop\wav2mp3Converter\wav2mp3Converter\main.cpp(26,27): error C2248: 'lameEncoder::lameEncoder': cannot access private member declared in class 'lameEncoder'
-F:\develop\wav2mp3Converter\wav2mp3Converter\lameEncoder.h(7): message : see declaration of 'lameEncoder::lameEncoder'
-F:\develop\wav2mp3Converter\wav2mp3Converter\lameEncoder.h(5): message : see declaration of 'lameEncoder'
+  wav2mp3Converter.vcxproj -> F:\develop\wav2mp3Converter\wav2mp3Converter\Debug\wav2mp3Converter.exe

@@ -12,11 +12,37 @@
 
 static std::vector<std::string> files;
 
+std::string getNextFile()
+{
+    std::string file;
+    {
+        static std::mutex filesMtx;
+        std::lock_guard<std::mutex> lock(filesMtx);
+
+        if (!files.empty())
+        {
+            file = std::move(files.back());
+            files.pop_back();
+        }
+    }
+    return file;
+}
+
+static void sync(std::function<void()> _func)
+{
+    static std::mutex mtx;
+    std::lock_guard<std::mutex> lock(mtx);
+    _func();
+}
+
 static void convertFile(const std::string& _inFile, const std::string& _outFile)
 {
     wavReader reader(_inFile);
     if (!reader.isOk())
+    {
+        sync([&_inFile]() { std::cout << "skipping invalid file " << _inFile << std::endl; });
         return;
+    }
 
     lameEncoder encoder(
         _outFile, 
@@ -38,20 +64,11 @@ static void processFiles()
         {
             while (true)
             {
-                std::string file;
-                {
-                    static std::mutex filesMutex;
-                    std::lock_guard<std::mutex> lock(filesMutex);
-
-                    if (files.empty())
-                        return;
-
-                    file = std::move(files.back());
-                    files.pop_back();
-
-                    std::cout << "processing " << file << std::endl;
-                }
-                                
+                const auto file = getNextFile();
+                if (file.empty())
+                    return;
+                   
+                sync([&file]() { std::cout << "processing " << file << std::endl; });
                 convertFile(file, replaceExtension(file));
             }
         });
