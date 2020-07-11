@@ -1,6 +1,7 @@
 .vs
 .sui
 out
+build
 *.tlog
 *.obj
 *.log
