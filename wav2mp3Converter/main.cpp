@@ -2,33 +2,35 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <mutex>
 
 #include "fileUtils.h"
 #include "platform.h"
+#include "posix_thread.h"
+#include "wavReader.h"
+#include "lameEncoder.h"
 
 static std::vector<std::string> files;
-static std::string getNextFile()
+
+static void convertFile(const std::string& _inFile, const std::string& _outFile)
 {
-    std::string file;
+    wavReader reader(_inFile);
+    if (!reader.isOk())
+        return;
 
-    {
-        if (!files.empty())
-        {
-            file = std::move(files.back());
-            files.pop_back();
-        }
-    }
-
-    return file;
+    lameEncoder encoder(
+        _outFile, 
+        reader.numberOfChannels(),
+        reader.sampleRate(),
+        reader.bitsPerSample(),
+        reader.dataSize());
 }
-
-class thread1;
 
 static void processFiles()
 {
     const auto coreCount = std::min(int(files.size()), platform::coreCount());
 
-    std::vector<thread1> threads;
+    std::vector<posix_thread> threads;
     threads.reserve(coreCount);
     for (auto i = 0; i < coreCount; ++i)
     {
@@ -36,12 +38,21 @@ static void processFiles()
         {
             while (true)
             {
-                auto file = getNextFile();
-                if (file.empty())
-                    return;
+                std::string file;
+                {
+                    static std::mutex filesMutex;
+                    std::lock_guard<std::mutex> lock(filesMutex);
 
-                std::cout << "processing " << file << std::endl;
-                convertFile(file);
+                    if (files.empty())
+                        return;
+
+                    file = std::move(files.back());
+                    files.pop_back();
+
+                    std::cout << "processing " << file << std::endl;
+                }
+                                
+                convertFile(file, replaceExtension(file));
             }
         });
     }
@@ -64,9 +75,6 @@ int main(int _argc, char** _argv)
         std::cout << "no WAV files found" << std::endl;
         return 1;
     }
-
-    for (const auto& f : files)
-        std::cout << f << std::endl;
 
     processFiles();
 

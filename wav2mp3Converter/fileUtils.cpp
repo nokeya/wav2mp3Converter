@@ -28,6 +28,7 @@ namespace
     }
 
     const std::string wavExt = ".wav";
+    const std::string mp3Ext = ".mp3";
 }
 
 std::vector<std::string> getFiles(const std::string& _path)
@@ -70,4 +71,9 @@ std::vector<std::string> getFiles(const std::string& _path)
     }
 
     return result;
+}
+
+std::string replaceExtension(const std::string& _file)
+{
+    return _file.substr(0, _file.size() - wavExt.size()) + mp3Ext;
 }
