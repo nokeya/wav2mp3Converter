@@ -60,6 +60,7 @@ static void convertFile(const std::string& _inFile, const std::string& _outFile)
 static void processFiles()
 {
     const auto coreCount = std::min(int(files.size()), platform::coreCount());
+    std::cout << "converting using " << coreCount << " threads" << std::endl;
 
     std::vector<posix_thread> threads;
     threads.reserve(coreCount);
