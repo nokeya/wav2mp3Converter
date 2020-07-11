@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 
+#include "fileUtils.h"
+
 static std::vector<std::string> files;
 static std::string getNextFile()
 {
@@ -16,11 +18,6 @@ static std::string getNextFile()
 	}
 
 	return file;
-}
-
-static std::vector<std::string> getFiles(const char* _folder)
-{
-	return {};
 }
 
 static void processFiles()
@@ -42,6 +39,9 @@ int main(int _argc, char** _argv)
 		std::cout << "no WAV files found" << std::endl;
 		return 1;
 	}
+
+	for (const auto& f : files)
+		std::cout << f << std::endl;
 
 	processFiles();
 
