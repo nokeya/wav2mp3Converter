@@ -1,4 +1,5 @@
 #include "fileUtils.h"
+#include "platform.h"
 #include "dirent/dirent.h"
 
 #include <algorithm>
@@ -26,14 +27,6 @@ namespace
         return pathType::invalid;
     }
 
-    char slash()
-    {
-#ifdef _WIN32
-        return '\\';
-#endif 
-        return '/';
-    }
-
     const std::string wavExt = ".wav";
 }
 
@@ -44,7 +37,7 @@ std::vector<std::string> getFiles(const std::string& _path)
     const auto type = getPathType(_path);
     if (type == pathType::folder)
     {
-        const auto addSlash = _path.back() != slash();
+        const auto addSlash = _path.back() != platform::slash();
         if (DIR* d = opendir(_path.c_str()))
         {
             dirent* de;
@@ -62,7 +55,7 @@ std::vector<std::string> getFiles(const std::string& _path)
 
                 auto fullPath = _path;
                 if (addSlash)
-                    fullPath += slash();
+                    fullPath += platform::slash();
                 fullPath += name;
 
                 if (getPathType(fullPath) == pathType::file)

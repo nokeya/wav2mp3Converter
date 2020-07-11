@@ -1,8 +1,10 @@
 ﻿#include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "fileUtils.h"
+#include "platform.h"
 
 static std::vector<std::string> files;
 static std::string getNextFile()
@@ -20,9 +22,32 @@ static std::string getNextFile()
     return file;
 }
 
+class thread1;
+
 static void processFiles()
 {
+    const auto coreCount = std::min(int(files.size()), platform::coreCount());
 
+    std::vector<thread1> threads;
+    threads.reserve(coreCount);
+    for (auto i = 0; i < coreCount; ++i)
+    {
+        threads.emplace_back([]()
+        {
+            while (true)
+            {
+                auto file = getNextFile();
+                if (file.empty())
+                    return;
+
+                std::cout << "processing " << file << std::endl;
+                convertFile(file);
+            }
+        });
+    }
+
+    for (const auto& t : threads)
+        t.join();
 }
 
 int main(int _argc, char** _argv)
