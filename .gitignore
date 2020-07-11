@@ -10,3 +10,4 @@ build
 wav2mp3Converter/wav2mp3Converter/Debug/*
 wav2mp3Converter/Debug/*
 wav2mp3Converter/lame-3.100/*
+lame-3.100/config.h
