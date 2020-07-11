@@ -7,17 +7,17 @@
 static std::vector<std::string> files;
 static std::string getNextFile()
 {
-	std::string file;
+    std::string file;
 
-	{
-		if (!files.empty())
-		{
-			file = std::move(files.back());
-			files.pop_back();
-		}
-	}
+    {
+        if (!files.empty())
+        {
+            file = std::move(files.back());
+            files.pop_back();
+        }
+    }
 
-	return file;
+    return file;
 }
 
 static void processFiles()
@@ -27,24 +27,24 @@ static void processFiles()
 
 int main(int _argc, char** _argv)
 {
-	if (_argc < 2)
-	{
-		std::cout << "no folder provided" << std::endl;
-		return 1;
-	}
+    if (_argc < 2)
+    {
+        std::cout << "no folder provided" << std::endl;
+        return 1;
+    }
 
-	files = getFiles(_argv[1]);
-	if (files.empty())
-	{
-		std::cout << "no WAV files found" << std::endl;
-		return 1;
-	}
+    files = getFiles(_argv[1]);
+    if (files.empty())
+    {
+        std::cout << "no WAV files found" << std::endl;
+        return 1;
+    }
 
-	for (const auto& f : files)
-		std::cout << f << std::endl;
+    for (const auto& f : files)
+        std::cout << f << std::endl;
 
-	processFiles();
+    processFiles();
 
-	std::cout << "done" << std::endl;
-	return 0;
+    std::cout << "done" << std::endl;
+    return 0;
 }
