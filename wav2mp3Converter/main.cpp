@@ -44,12 +44,17 @@ static void convertFile(const std::string& _inFile, const std::string& _outFile)
         return;
     }
 
-    lameEncoder encoder(
-        _outFile, 
-        reader.numberOfChannels(),
-        reader.sampleRate(),
-        reader.bitsPerSample(),
-        reader.dataSize());
+    lameEncoder encoder(_outFile, reader.numberOfChannels(), reader.sampleRate(), reader.bitsPerSample(), reader.dataSize());
+    if (!encoder.isOk())
+    {
+        sync([&_inFile]() { std::cout << "LAME init error for " << _inFile << std::endl; });
+        return;
+    }
+
+    if (reader.numberOfChannels() == 1)
+        encoder.encodeMono(reader.samples());
+    else
+        encoder.encodeStereo(reader.samples());
 }
 
 static void processFiles()

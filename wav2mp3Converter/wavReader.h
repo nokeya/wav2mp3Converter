@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <fstream>
+#include <vector>
 
 struct wavHeader
 {
@@ -27,15 +28,19 @@ class wavReader
 {
 public:
     wavReader(const std::string& _path);
-    bool isOk() const;
+
+    bool isOk() const noexcept { return isOk_; }
 
     int numberOfChannels() const noexcept { return header_.numberOfChannels_; }
     int sampleRate() const noexcept { return header_.samplesPerSecond_; }
     int bitsPerSample() const noexcept { return header_.bitsPerSample_; }
     int dataSize() const noexcept { return header_.dataSize_; }
 
+    const std::vector<short>& samples() const noexcept { return samples_; }
+
 private:
     std::ifstream input_;
     wavHeader header_;
+    std::vector<short> samples_;
     bool isOk_ = false;
 };

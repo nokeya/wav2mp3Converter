@@ -1,6 +1,12 @@
 #include "fileUtils.h"
 #include "platform.h"
+
+#ifdef _WIN32
 #include "dirent/dirent.h"
+#else
+#include <dirent.h>
+#endif
+
 
 #include <algorithm>
 

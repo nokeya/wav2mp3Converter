@@ -1,2 +1,7 @@
 .vs/*
 out/*
+*.opendb
+*.pdb
+wav2mp3Converter/wav2mp3Converter/Debug/*
+wav2mp3Converter/Debug/*
+wav2mp3Converter/lame-3.100/*
