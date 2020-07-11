@@ -11,7 +11,7 @@ lameEncoder::lameEncoder(
 	: lame_(lame_init())
 	, output_(_outputPath, std::ios_base::out | std::ios_base::binary)
 {
-	if (!lame_ || output_.is_open())
+    if (!lame_)
 		return;
 
 	lame_set_quality(lame_, 5);

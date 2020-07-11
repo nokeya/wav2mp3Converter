@@ -29,7 +29,7 @@ wavReader::wavReader(const std::string& _path)
 
     const auto bytesPerSample = header_.bitsPerSample_ / 8;
     const auto numberOfSamples = header_.dataSize_ / bytesPerSample;
-    if (header_.dataSize_ == sizeof(short) * numberOfSamples)
+    if (header_.dataSize_ != sizeof(short) * numberOfSamples)
         return;
 
     std::vector<short> samples;
