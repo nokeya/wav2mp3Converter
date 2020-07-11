@@ -40,7 +40,7 @@ static void convertFile(const std::string& _inFile, const std::string& _outFile)
     wavReader reader(_inFile);
     if (!reader.isOk())
     {
-        sync([&_inFile]() { std::cout << "skipping invalid file " << _inFile << std::endl; });
+        sync([&_inFile]() { std::cout << "skipping invalid or incompatible file " << _inFile << std::endl; });
         return;
     }
 
