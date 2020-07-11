@@ -1,5 +1,9 @@
-.vs/*
-out/*
+.vs
+.sui
+out
+*.tlog
+*.obj
+*.log
 *.opendb
 *.pdb
 wav2mp3Converter/wav2mp3Converter/Debug/*

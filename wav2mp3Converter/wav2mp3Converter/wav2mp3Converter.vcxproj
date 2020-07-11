@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>F:\develop\wav2mp3Converter\wav2mp3Converter\pthreads_w32\include;F:\develop\wav2mp3Converter\wav2mp3Converter\dirent;$(IncludePath)</IncludePath>
+    <IncludePath>F:\develop\wav2mp3Converter\wav2mp3Converter\pthreads_w32\include;F:\develop\wav2mp3Converter\wav2mp3Converter\lame-3.100\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
